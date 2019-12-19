@@ -1,0 +1,76 @@
+<h3>User Registration</h3>
+<hr>
+<form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.firstname.errors }"
+            placeholder="Enter First Name here" [formControl]="firstname" />
+        <div *ngIf="submitted && fval.firstname.errors" class="invalid-feedback">
+            <div *ngIf="fval.firstname.errors.required">First Name is required</div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.lastname.errors }"
+            placeholder="Enter Last Name here" [formControl]="lastname" />
+        <div *ngIf="submitted && fval.lastname.errors" class="invalid-feedback">
+            <div *ngIf="fval.lastname.errors.required">Last Name is required</div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" placeholder="Enter email here" [formControl]="email" />
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" class="form-control" placeholder="Enter Phone here" [formControl]="phone" />
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.username.errors }"
+            placeholder="Enter Username here" [formControl]="username" />
+        <div *ngIf="submitted && fval.username.errors" class="invalid-feedback">
+            <div *ngIf="fval.username.errors.required">Username is required</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="Password" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.password.errors }"
+            placeholder="Enter Password here" [formControl]="password" />
+        <div *ngIf="submitted && fval.password.errors" class="invalid-feedback">
+            <div *ngIf="fval.password.errors.required">Password is required</div>
+            <div *ngIf="fval.password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <p>Your job : </p>
+        <div class="d-flex">
+            <div class="form-check">
+                <label class="form-check-label" for="student">
+                    <input type="radio" class="form-check-input" name="is_student" [formControl]="is_student" value="student" checked>student
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label" for="professor">
+                    <input type="radio" class="form-check-input" name="is_student" [formControl]="is_student" value="professor">professor
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Register
+        </button>
+        <a routerLink="/login" class="btn btn-link">Login to continue</a>
+    </div>
+</form>
