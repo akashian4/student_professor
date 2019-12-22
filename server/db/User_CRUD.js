@@ -1,25 +1,38 @@
-var Models = require("../Models/User");
+var Models = require('../Models/User');
+var jwt = require('jsonwebtoken');
 
 //read user
-const getUsers =(user) =>
-new Promise((resolve, reject) => {
-  Models.find(user)
-    .then(client => resolve(client))
-    .catch(err => {reject(err);
-      console.log(err);
-   });
-});
+const getUsers = user =>
+  new Promise((resolve, reject) => {
+    Models.find(user)
+      .then(client => resolve(client))
+      .catch(err => {
+        reject(err);
+        console.log(err);
+      });
+  });
 
 //create new user
-const createUser = (user) =>
-new Promise((resolve, reject) => {
-  new Models(user)
-    .save()
-    .then(client => resolve(client))
-    .catch(err => {reject(err);
-       console.log(err);
-    });
-});
+const createUser = user => {
+  let token = jwt
+    .sign(
+      {
+        username: user.username
+      },
+      'shams'
+    )
+    .toString();
+  user.token = token;
+  return new Promise((resolve, reject) => {
+    new Models(user)
+      .save()
+      .then(client => resolve(client))
+      .catch(err => {
+        reject(err);
+        console.log(err);
+      });
+  });
+};
 
 //update the user
 // const updateUser = (criteria, dataToSet, options) =>
@@ -40,10 +53,9 @@ new Promise((resolve, reject) => {
 //       .catch(err => reject(err));
 //   });
 
-
 module.exports = {
-//   updateUser: updateUser,
-//   deleteUser: deleteUser,
-createUser: createUser,
+  //   updateUser: updateUser,
+  //   deleteUser: deleteUser,
+  createUser: createUser,
   getUsers: getUsers
 };

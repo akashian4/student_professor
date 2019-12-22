@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var bcrypt = require('bcryptjs');
 
-let User = new Schema({
-  firstName: {
+var Schema = mongoose.Schema;
+let UserSchema = new Schema({
+  firstname: {
     type: String,
     trim: true,
     default: null,
     required: true
   },
-  lastName: {
+  lastname: {
     type: String,
     trim: true,
     default: null
@@ -32,15 +33,37 @@ let User = new Schema({
     required: true
   },
   phone: {
-    type: String,
+    type: String
     // minlength: 11,
     // maxlength: 11
   },
   is_student: {
-    type: Boolean,
+    type: Boolean
     // minlength: 11,
     // maxlength: 11
+  },
+  token: {
+    type: String,
+    trim: true
   }
 });
 
-module.exports = mongoose.model('User', User);
+
+
+// UserSchema.pre('save', next => {
+//   let user = this;
+
+//   if (user.isModified('password')) {
+//     bcrypt.getSalt(10, (err, salt) => {
+//       bcrypt.hash(user.password, salt, (err, hash) => {
+//         user.password = hash;
+//         next();
+//       });
+//     });
+//   } else {
+//     next();
+//   }
+// });
+
+
+module.exports = mongoose.model('User', UserSchema);

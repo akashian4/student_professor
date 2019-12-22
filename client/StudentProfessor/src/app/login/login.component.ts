@@ -1,49 +1,20 @@
 
-// import { Router, ActivatedRoute } from '@angular/router';
-
-// import { ToastrService } from 'ngx-toastr';
-
-// import { AuthenticationService } from '../_services';
-
-
-  
-//   constructor(
-
-//     private router: Router,
-//     private authenticationService : AuthenticationService,
-//     private toastr: ToastrService
-//   ) { }
-
-
-
-
-//   onFormSubmit() {
-//     
-//      this.authenticationService.login(this.fval.email.value, this.fval.password.value)
-//         .subscribe(
-//             data => {
-//               this.router.navigate(['/']);
-//             },
-//             error => {
-//               this.toastr.error(error.error.message, 'Error');
-//                 this.loading = false;
-//             });
-//   }
-// }
-
-
-
-
-
-
 
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
+import { Router, ActivatedRoute } from "@angular/router";
+import { AuthenticationService } from "../_services/authentication.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  styleUrls: ["./login.component.css",
+  "./toastr.css"]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -51,30 +22,44 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
-  username=new FormControl('');
-  password=new FormControl('');
-  
-  
+  username = new FormControl("");
+  password = new FormControl("");
+
   constructor(
     private formBuilder: FormBuilder,
-   
-   
-  ) { }
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ["", Validators.required],
+      password: ["", Validators.required]
     });
-
   }
-  get fval() { return this.loginForm.controls; }
-  onFormSubmit(){
+  get fval() {
+    return this.loginForm.controls;
+  }
+  onFormSubmit() {
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
     this.loading = true;
+    
+    this.authenticationService
+      .login(this.loginForm.value.username , this.loginForm.value.password)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.router.navigate(["/"]);
+        },
+        error => {
+          this.toastr.error(error.error.message, "Error");
+          alert(error.error.message,)
+          this.loading = false;
+        }
+      );
   }
-
 }

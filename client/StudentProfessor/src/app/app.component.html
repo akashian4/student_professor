@@ -10,8 +10,8 @@
 </div> -->
 
 <div class="jumbotron">
-  <button class="btn btn-primary">
-      <a  class="nav-item nav-link" style="cursor:pointer" (click)="logout()">Logout</a>
+  <button class="btn btn-primary"  *ngIf="currentUser" style="cursor:pointer" (click)="logout()">
+      Logout
   </button>
 
 <div class="container">

@@ -1,31 +1,3 @@
-// import { Router } from '@angular/router';
-// import { ToastrService } from 'ngx-toastr';
-
-// import { UserService } from '../_services/user.service';
-
-//   constructor(
-//
-//     private router: Router,
-//     private userService: UserService,
-//     private toastr: ToastrService
-//   ) { }
-//
-
-//
-
-//   onFormSubmit(){
-
-//     this.userService.register(this.registerForm.value).subscribe(
-//       (data)=>{
-//         alert('User Registered successfully!!');
-//         this.router.navigate(['/login']);
-//      },
-//       (error)=>{
-//         this.toastr.error(error.error.message, 'Error');
-//         this.loading = false;
-//       }
-//     )
-
 import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
@@ -33,6 +5,9 @@ import {
   Validators,
   FormControl
 } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import { UserService } from "../_services/user.service";
 
 @Component({
   selector: "app-register",
@@ -54,7 +29,7 @@ export class RegisterComponent implements OnInit {
     Validators.required,
     Validators.minLength(6)
   ]);
-  is_student=new FormControl("student");
+  is_student = new FormControl("student");
 
   registerForm: FormGroup = this.builder.group({
     firstname: this.firstname,
@@ -66,11 +41,12 @@ export class RegisterComponent implements OnInit {
     is_student: this.is_student
   });
 
-  get fval() {
-    return this.registerForm.controls;
-  }
-
-  constructor(private builder: FormBuilder) {}
+  constructor(
+    private builder: FormBuilder,
+    private toastr: ToastrService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {}
   onFormSubmit() {
@@ -80,6 +56,31 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.loading = true;
-    console.log(this.registerForm.value);
+console.log(this.registerForm.value);
+var user=this.registerForm.value;
+if(user.is_student=="student"){
+  user.is_student="true";
+}else{
+  user.is_student="false";
+}
+console.log(user);
+
+    this.userService.register(user).subscribe(
+      data => {
+        alert("User Registered successfully!!");
+        // this.toastr.success("User Registered successfully!!","Successfull")
+        this.router.navigate(["/login"]);        
+
+      },
+      error => {
+        console.log(error);
+        this.toastr.error(error.error.message, "Error");
+        this.loading = false;
+      }
+    );
+  }
+
+  get fval() {
+    return this.registerForm.controls;
   }
 }
