@@ -5,10 +5,11 @@ const server = require('http').Server(app);
 const bodyParser = require('body-parser');
 // const cors = require('cors');
 // var User = require('./Models/User');
+const {authenticate}=require('./authenticate/authenticate');
 
 
 const mongoose = require('./db/mongoose');
-const authRoute = require('./Routes/auth');
+const Route = require('./Routes/Route');
 var cors = require('cors')
 
 app.use(cors()) 
@@ -27,8 +28,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use('/auth', authRoute);
-
+app.use('/auth', Route);
+app.use('/api',authenticate, Route);
 
 
 server.listen(3000, () => {

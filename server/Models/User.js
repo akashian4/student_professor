@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+// var bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 let UserSchema = new Schema({
@@ -45,10 +46,78 @@ let UserSchema = new Schema({
   token: {
     type: String,
     trim: true
-  }
+  },
+  command: [
+    {
+      title: {
+        type: String,
+        required: true,
+        maxlength: 20
+      },
+      text_command: {
+        type: String,
+        required: true
+      },
+      date: {
+        type: String,
+        required: true
+      },
+      like: {
+        type: Number,
+        default: 0
+      },
+      answers: [
+        {
+          name: {
+            type: String,
+            required: true
+          },
+          text_answer: {
+            type: String,
+            required: true
+          },
+          date: {
+            type: String,
+            required: true
+          }
+        }
+      ]
+    }
+  ]
 });
 
+UserSchema.statics.findByToken = function(token) {
+  let User = this;
+  let decoded;
 
+  try {
+    decoded = jwt.verify(token, 'shams');
+  } catch (e) {
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    username: decoded.username,
+    token: token
+  });
+};
+
+// UserSchema.statics.findByToken = function(token) {
+//   let user = this;
+//   let decode;
+
+//   try {
+//     decode = jwt.verify(token, 'shams');
+//   } catch (e) {
+//     return Promise.reject();
+//   }
+//   console.log(user);
+
+//   return user.findeOne({
+//     _id: decode._id,
+//     token: token
+//   });
+// };
 
 // UserSchema.pre('save', next => {
 //   let user = this;
@@ -64,6 +133,6 @@ let UserSchema = new Schema({
 //     next();
 //   }
 // });
+let Models = mongoose.model('User', UserSchema);
 
-
-module.exports = mongoose.model('User', UserSchema);
+module.exports = { Models };

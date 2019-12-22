@@ -1,4 +1,4 @@
-var Models = require('../Models/User');
+var {Models} = require('../Models/User');
 var jwt = require('jsonwebtoken');
 
 //read user
