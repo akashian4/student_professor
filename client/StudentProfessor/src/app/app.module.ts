@@ -11,6 +11,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { UserService } from './_services/user.service';
 import { InterceptorService } from './_services/interceptor.service';
+import { StudentHomeComponent } from './student-home/student-home.component';
+import { ProfessorHomeComponent } from './professor-home/professor-home.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { InterceptorService } from './_services/interceptor.service';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    StudentHomeComponent,
+    ProfessorHomeComponent
   ],
   imports: [
     ReactiveFormsModule,

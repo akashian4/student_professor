@@ -1,0 +1,14 @@
+<p>student-home works!</p>
+
+<form [formGroup]="commandForm" (ngSubmit)="onSave()">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" formControlName="title" placeholder="Enter Title">
+    </div>
+    <div class="form-group">
+        <label for="command">Command:</label>
+        <input type="command" class="form-control" formControlName="command" placeholder="Enter Text Command">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

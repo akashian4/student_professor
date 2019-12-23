@@ -50,27 +50,27 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {}
   onFormSubmit() {
+    
     this.submitted = true;
     // return for here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
     this.loading = true;
-console.log(this.registerForm.value);
-var user=this.registerForm.value;
-if(user.is_student=="student"){
-  user.is_student="true";
-}else{
-  user.is_student="false";
-}
-console.log(user);
+    console.log(this.registerForm.value);
+    var user = this.registerForm.value;
+    if (user.is_student == "student") {
+      user.is_student = "true";
+    } else {
+      user.is_student = "false";
+    }
+    console.log(user);
 
     this.userService.register(user).subscribe(
       data => {
         alert("User Registered successfully!!");
         // this.toastr.success("User Registered successfully!!","Successfull")
-        this.router.navigate(["/login"]);        
-
+        this.router.navigate(["/login"]);
       },
       error => {
         console.log(error);

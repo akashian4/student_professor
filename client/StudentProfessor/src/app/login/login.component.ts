@@ -8,7 +8,7 @@ import {
   FormControl
 } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { AuthenticationService } from "../_services/authentication.service";
 @Component({
   selector: "app-login",

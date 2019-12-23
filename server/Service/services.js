@@ -29,7 +29,6 @@ let register = async (req, res) => {
 
         const addUser = await User_CRUD.createUser(userData);
         if (addUser) {
-          console.log(addUser.token);
           res.header('x-auth', addUser.token);
           res.status(200).json({ message: 'User registered successfully!' });
         } else {
@@ -63,7 +62,8 @@ let login = async (req, res) => {
           res.header('x-auth', checkPassword[0].token);
           res.status(200).json({
             message: 'Logged in successfully!',
-            result: checkPassword[0]
+            result: checkPassword[0],
+            token:checkPassword[0].token
           });
         } else {
           res.status(401).json({ message: 'Incorrect password' });
@@ -101,15 +101,15 @@ let command = async (req, res) => {
       );
       if (!user) {
         return res.status(404).json({
-          Error: 'user not found'
+          massage: 'user not found'
         });
       }
       res.status(200).json({
-        Massage: 'command has been saved'
+        massage: 'command has been saved'
       });
     } catch (e) {
       res.status(400).json({
-        Error: `somthing went wrong!.${e}`
+        massage: `somthing went wrong!.${e}`
       });
     }
   }
