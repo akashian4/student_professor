@@ -1,14 +1,38 @@
 <p>student-home works!</p>
-
-<form [formGroup]="commandForm" (ngSubmit)="onSave()">
-    <div class="form-group">
-        <label for="title">Title:</label>
-        <input type="text" class="form-control" formControlName="title" placeholder="Enter Title">
+<div class="row">
+    <div class="col-md-3">
+        <h4>List of Commands</h4>
+        <hr>
+        <ul class="list-group">
+            <li *ngFor=" let index of users " class="list-group-item justify-content-between align-items-center">
+                professor : {{index.firstname}}
+                <hr>
+                <p *ngFor=" let i of index.command " id="title">
+                    <button type="button" (click)="onclick(i)"
+                        class="btn btn-light list-group-item-action list-group-item-info">
+                        title : {{i.title}}
+                        <span class="badge badge-warning badge-pill ">{{i.like}} like</span>
+                        <span class="badge badge-primary badge-pill ">time : {{i.date}}</span>
+                    </button>
+    
+                </p>
+            </li>
+        </ul>
     </div>
-    <div class="form-group">
-        <label for="command">Command:</label>
-        <input type="command" class="form-control" formControlName="command" placeholder="Enter Text Command">
+    <div class="col-md-5">
+        <app-text-command [text_command]="textcommand" [answers]="answers"></app-text-command>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+    <div class="col-md-4">
+        <h4>Add New Answer</h4>
+        <hr>
+            <form [formGroup]="answerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <textarea class="form-control" name="message" rows="10" cols="30" class="form-control" formControlName="textanswer"
+                        placeholder="Enter Text Answer">
+                </textarea>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+    </div>
+</div>

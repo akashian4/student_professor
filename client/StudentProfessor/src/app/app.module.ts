@@ -13,7 +13,8 @@ import { UserService } from './_services/user.service';
 import { InterceptorService } from './_services/interceptor.service';
 import { StudentHomeComponent } from './student-home/student-home.component';
 import { ProfessorHomeComponent } from './professor-home/professor-home.component';
-
+import { CommonModule } from '@angular/common';
+import { TextCommandComponent } from './text-command/text-command.component';
 
 @NgModule({
   declarations: [
@@ -22,9 +23,11 @@ import { ProfessorHomeComponent } from './professor-home/professor-home.componen
     LoginComponent,
     RegisterComponent,
     StudentHomeComponent,
-    ProfessorHomeComponent
+    ProfessorHomeComponent,
+    TextCommandComponent
   ],
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

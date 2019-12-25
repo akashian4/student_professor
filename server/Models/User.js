@@ -102,37 +102,14 @@ UserSchema.statics.findByToken = function(token) {
   });
 };
 
-// UserSchema.statics.findByToken = function(token) {
+// UserSchema.methods.removetoken = function(token) {
 //   let user = this;
-//   let decode;
 
-//   try {
-//     decode = jwt.verify(token, 'shams');
-//   } catch (e) {
-//     return Promise.reject();
-//   }
-//   console.log(user);
-
-//   return user.findeOne({
-//     _id: decode._id,
-//     token: token
+//   return user.update({
+//    token:""
 //   });
 // };
 
-// UserSchema.pre('save', next => {
-//   let user = this;
-
-//   if (user.isModified('password')) {
-//     bcrypt.getSalt(10, (err, salt) => {
-//       bcrypt.hash(user.password, salt, (err, hash) => {
-//         user.password = hash;
-//         next();
-//       });
-//     });
-//   } else {
-//     next();
-//   }
-// });
 let Models = mongoose.model('User', UserSchema);
 
 module.exports = { Models };

@@ -13,12 +13,14 @@ import { AuthenticationService } from "../_services/authentication.service";
   styleUrls: ["./student-home.component.css"]
 })
 export class StudentHomeComponent implements OnInit {
-  commandForm: FormGroup;
-  firstname: String;
   public currentUser;
+  users: any;
+  textcommand: string = "";
+  answers: string = "";
+  commandid;
 
-  title = new FormControl("");
-  command = new FormControl("");
+  answerForm: FormGroup;
+  textanswer = new FormControl("");
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,29 +29,44 @@ export class StudentHomeComponent implements OnInit {
     this.currentUser = localStorage.getItem("currentUser")
       ? JSON.parse(localStorage.getItem("currentUser"))
       : "";
-    this.firstname = this.currentUser.firstname;
+    this.authenticationService.getuser().subscribe(
+      data => {
+        this.users = data;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   ngOnInit() {
-    this.commandForm = this.formBuilder.group({
-      title: ["", Validators.required],
-      command: ["", Validators.required]
+    this.answerForm = this.formBuilder.group({
+      textanswer: this.textanswer
     });
   }
 
-  onSave() {
-    console.log(this.commandForm.value.command);
-    console.log(this.currentUser);
-
+  onSubmit() {
     this.authenticationService
-      .command(this.commandForm.value.title, this.commandForm.value.command)
+      .answer(this.commandid, this.textanswer.value)
       .subscribe(
         data => {
-          // console.log(data);
+          console.log(data);
         },
         error => {
           alert(error.error.message);
         }
       );
+  }
+
+  onclick(i) {
+    this.commandid = i._id;
+
+    this.answers = "";
+    for (const index of i.answers) {
+      this.answers += index.name + "\n" + "\t";
+      this.answers += index.text_answer + "\n";
+    }
+    // console.log(this.answers);
+    this.textcommand = i.title + "\n" + "\n" + i.text_command;
   }
 }

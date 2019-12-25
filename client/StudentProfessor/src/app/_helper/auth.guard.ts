@@ -4,7 +4,6 @@ import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  CanActivateChild
 } from "@angular/router";
 
 import { AuthenticationService } from "../_services/authentication.service";
@@ -19,6 +18,10 @@ export class AuthGuard implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authenticationService.currentUserValue;
+    
+    // let roles = route.data["roles"] as Array<string>;
+    // console.log(roles);
+
     if (currentUser) {
       // authorised so return true
 

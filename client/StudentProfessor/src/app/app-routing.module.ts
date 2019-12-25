@@ -14,17 +14,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children:[
       {
-        path: "",
-        redirectTo: "/student",
-        pathMatch: 'full',
-      },
-      {
         path: "student",
-        component: StudentHomeComponent
+        component: StudentHomeComponent,
+        data: {roles: ['student']}
       },
       {
         path: "professor",
-        component: ProfessorHomeComponent
+        component: ProfessorHomeComponent,
+        data: {roles: ['professor']}
       }
     ]
     

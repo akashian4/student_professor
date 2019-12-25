@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
@@ -13,8 +11,7 @@ import { AuthenticationService } from "../_services/authentication.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css",
-  "./toastr.css"]
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -42,22 +39,26 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
   onFormSubmit() {
+    
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
     this.loading = true;
-    
+
     this.authenticationService
-      .login(this.loginForm.value.username , this.loginForm.value.password)
+      .login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
         data => {
-          console.log(data);
-          this.router.navigate(["/"]);
+          if (data["result"]["is_student"]){
+            this.router.navigate(["/student"]);
+          } else{
+            this.router.navigate(["/professor"]);
+          }
         },
         error => {
           this.toastr.error(error.error.message, "Error");
-          alert(error.error.message,)
+          alert(error.error.message);
           this.loading = false;
         }
       );

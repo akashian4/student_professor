@@ -63,7 +63,7 @@ let login = async (req, res) => {
           res.status(200).json({
             message: 'Logged in successfully!',
             result: checkPassword[0],
-            token:checkPassword[0].token
+            token: checkPassword[0].token
           });
         } else {
           res.status(401).json({ message: 'Incorrect password' });
@@ -79,48 +79,55 @@ let login = async (req, res) => {
 
 /* API to post command */
 let command = async (req, res) => {
-  if (!req.body.title || !req.body.text_command) {
-    res.status(401).json({ message: 'Parameters are missing' });
-  } else {
-    try {
-      persianDate.toLocale('en');
-      var date = new persianDate().format('YYYY/M/DD');
-      let user = await Models.findOneAndUpdate(
-        {
-          _id: req.user._id
-        },
-        {
-          $push: {
-            command: {
-              title: req.body.title,
-              text_command: req.body.text_command,
-              date: date
-            }
+  if (!req.body.title && !req.body.text_command) {
+    res.status(404).json({ message: 'title and command not exist!' });
+  }
+  if (!req.body.title) {
+    res.status(404).json({ message: 'title not exist!' });
+  }
+  if (!req.body.text_command) {
+    res.status(404).json({ message: 'command not exist!' });
+  }
+  try {
+    persianDate.toLocale('en');
+    var date = new persianDate().format('YYYY/M/DD');
+    let user = await Models.findOneAndUpdate(
+      {
+        _id: req.user._id
+      },
+      {
+        $push: {
+          command: {
+            title: req.body.title,
+            text_command: req.body.text_command,
+            date: date
           }
         }
-      );
-      if (!user) {
-        return res.status(404).json({
-          massage: 'user not found'
-        });
       }
-      res.status(200).json({
-        massage: 'command has been saved'
-      });
-    } catch (e) {
-      res.status(400).json({
-        massage: `somthing went wrong!.${e}`
+    );
+    if (!user) {
+      return res.status(404).json({
+        massage: 'user not found'
       });
     }
+    res.status(200).json({
+      massage: 'command has been saved'
+    });
+  } catch (e) {
+    res.status(400).json({
+      massage: `somthing went wrong!.${e}`
+    });
   }
 };
 
 /* API to post answer */
 let answer = async (req, res) => {
-  let commandid = req.params.commandid;
+  let commandid = req.body.commandid;
 
   if (!commandid) {
-    res.status(401).json({ message: 'Parameters are missing' });
+    res.status(401).json({
+      message: 'Parameters are missing. please select command then try again!!'
+    });
   } else {
     try {
       persianDate.toLocale('en');
@@ -132,7 +139,7 @@ let answer = async (req, res) => {
         {
           $push: {
             'command.$.answers': {
-              name: req.user.firstname +" "+ req.user.lastname,
+              name: req.user.firstname + ' ' + req.user.lastname,
               text_answer: req.body.text_answer,
               date: date
             }
@@ -142,15 +149,15 @@ let answer = async (req, res) => {
 
       if (!user) {
         return res.status(404).json({
-          Error: 'user not found'
+          massage: 'user not found'
         });
       }
       res.status(200).json({
-        Massage: 'answer has been saved'
+        massage: 'answer has been saved'
       });
     } catch (e) {
       res.status(400).json({
-        Error: `somthing went wrong!.${e}`
+        massage: `somthing went wrong!.${e}`
       });
     }
   }
@@ -159,14 +166,22 @@ let answer = async (req, res) => {
 /* API to get user */
 let getuser = async (req, res) => {
   try {
-    let user = await Models.findOne(
+    let user = await Models.find(
       {
-        _id: req.user._id
+        // _id: req.user._id
       },
       (err, res) => {
-        if(err) console.log(err);
+        if (err) console.log(err);
       }
     );
+
+    //   var users=[];
+
+    // Object.keys(user).forEach(key => {
+    //   // console.log(`${key} : ${user[key]}`);
+    //   users.push(user[key]);
+    // });
+    // console.log(users);
 
     if (!user) {
       return res.status(404).json({
@@ -181,10 +196,25 @@ let getuser = async (req, res) => {
   }
 };
 
+/* API to logout user */
+// let logout = async (req, res) => {
+//   try {
+//     await req.user.removetoken(req.token);
+//     res.status(200).json({
+//       massage: 'logout succesfull.'
+//     });
+//   } catch (e) {
+//     res.status(400).json({
+//       massage: `something went wrong.${e}`
+//     });
+//   }
+// };
+
 module.exports = {
   register: register,
   login: login,
   command: command,
   answer: answer,
   getuser: getuser
+  // logout:logout
 };
