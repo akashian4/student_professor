@@ -1,3 +1,10 @@
 button{
     margin-left: 90%;
 }
+.bg{
+    background-image: url('H:/my project/student_professor/client/StudentProfessor/src/assets/bg-01.jpg');
+    background-size: cover;
+    height: 1000px;
+    padding-top: 100px;
+    background-attachment: fixed;
+}

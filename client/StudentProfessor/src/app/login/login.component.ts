@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
   onFormSubmit() {
-    
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
@@ -50,9 +49,9 @@ export class LoginComponent implements OnInit {
       .login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
         data => {
-          if (data["result"]["is_student"]){
+          if (data["result"]["is_student"]) {
             this.router.navigate(["/student"]);
-          } else{
+          } else {
             this.router.navigate(["/professor"]);
           }
         },

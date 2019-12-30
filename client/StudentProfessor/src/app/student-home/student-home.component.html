@@ -1,38 +1,38 @@
-<p>student-home works!</p>
 <div class="row">
     <div class="col-md-3">
-        <h4>List of Commands</h4>
+        <h3>List of Commands</h3>
         <hr>
+        <p>Please select command</p>
         <ul class="list-group">
-            <li *ngFor=" let index of users " class="list-group-item justify-content-between align-items-center">
+            <li *ngFor=" let index of professors " class="list-group-item justify-content-between align-items-center">
                 professor : {{index.firstname}}
                 <hr>
                 <p *ngFor=" let i of index.command " id="title">
                     <button type="button" (click)="onclick(i)"
-                        class="btn btn-light list-group-item-action list-group-item-info">
+                        class="btn btn-light list-group-item-action list-group-item-info" [ngStyle]="{border: getboarder(i)}">
                         title : {{i.title}}
                         <span class="badge badge-warning badge-pill ">{{i.like}} like</span>
-                        <span class="badge badge-primary badge-pill ">time : {{i.date}}</span>
+                        <span class="badge badge-info badge-pill ">time : {{i.date}}</span>
                     </button>
-    
+
                 </p>
             </li>
         </ul>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5"  *ngIf="selected">
         <app-text-command [text_command]="textcommand" [answers]="answers"></app-text-command>
     </div>
-    <div class="col-md-4">
-        <h4>Add New Answer</h4>
+    <div class="col-md-4"  *ngIf="selected">
+        <h3>Add New Answer</h3>
         <hr>
-            <form [formGroup]="answerForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <textarea class="form-control" name="message" rows="10" cols="30" class="form-control" formControlName="textanswer"
-                        placeholder="Enter Text Answer">
+        <form [formGroup]="answerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <textarea class="form-control" name="message" rows="10" cols="30" class="form-control"
+                    formControlName="textanswer" placeholder="Enter Text Answer">
                 </textarea>
-                </div>
-    
-                <button type="submit" class="btn btn-primary">Save</button>
-            </form>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
     </div>
 </div>

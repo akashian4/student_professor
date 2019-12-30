@@ -13,12 +13,13 @@ import { AuthenticationService } from "../_services/authentication.service";
   styleUrls: ["./student-home.component.css"]
 })
 export class StudentHomeComponent implements OnInit {
+  selected=false;
   public currentUser;
   users: any;
   textcommand: string = "";
-  answers: string = "";
+  answers = [];
   commandid;
-
+  professors = [];
   answerForm: FormGroup;
   textanswer = new FormControl("");
 
@@ -32,6 +33,11 @@ export class StudentHomeComponent implements OnInit {
     this.authenticationService.getuser().subscribe(
       data => {
         this.users = data;
+        for (const i of this.users) {
+          if (!i.is_student) {
+            this.professors.push(i);
+          }
+        }
       },
       error => {
         console.log(error);
@@ -59,14 +65,32 @@ export class StudentHomeComponent implements OnInit {
   }
 
   onclick(i) {
+    this.selected=true;
     this.commandid = i._id;
 
-    this.answers = "";
+    this.answers = [];
     for (const index of i.answers) {
-      this.answers += index.name + "\n" + "\t";
-      this.answers += index.text_answer + "\n";
+      // this.answers += "[(name : " +index.name + ")" + "\n" +"(date : " +index.date + ")]" + "\n"+ "text_answer :" +index.text_answer + "\n";
+      this.answers.push(
+        `[(name : ${index.name})(date : ${index.date})] text_answer : ${index.text_answer}.`
+      );
     }
-    // console.log(this.answers);
-    this.textcommand = i.title + "\n" + "\n" + i.text_command;
+    this.textcommand =
+      "[(title : " +
+      i.title +
+      ")" +
+      "\n" +
+      "(date : " +
+      i.date +
+      ")]" +
+      "\n" +
+      "text_command : " +
+      i.text_command;
+  }
+
+  getboarder(i){
+    if(this.commandid==i._id){
+      return "1px solid red";
+    }
   }
 }

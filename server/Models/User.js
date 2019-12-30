@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 // var bcrypt = require('bcryptjs');
+// const _ = require('lodash');
 
 var Schema = mongoose.Schema;
 let UserSchema = new Schema({
@@ -101,6 +102,12 @@ UserSchema.statics.findByToken = function(token) {
     token: token
   });
 };
+
+// UserSchema.methods.toJSON = function () {
+//   let user = this;
+//   let userObject = user.toObject();
+//   return _.pick(userObject, ['_id', 'firstname','lastname','phone','token', 'email']);
+// }
 
 // UserSchema.methods.removetoken = function(token) {
 //   let user = this;

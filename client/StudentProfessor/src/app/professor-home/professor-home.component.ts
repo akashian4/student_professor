@@ -1,10 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from "@angular/forms";
+import { FormGroup, FormControl, FormBuilder } from "@angular/forms";
 import { AuthenticationService } from "../_services/authentication.service";
 
 @Component({
@@ -13,15 +8,17 @@ import { AuthenticationService } from "../_services/authentication.service";
   styleUrls: ["./professor-home.component.css"]
 })
 export class ProfessorHomeComponent implements OnInit {
+  selected=false;
   commandForm: FormGroup;
   public currentUser;
   users: any;
   commands = {};
   textcommand: string = "";
-  answers: string = "";
-
+  answers = [];
+  professors = [];
   title = new FormControl("");
   command = new FormControl("");
+  commandid;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,12 +29,17 @@ export class ProfessorHomeComponent implements OnInit {
       : "";
     this.authenticationService.getuser().subscribe(
       data => {
+        // console.log(data['0'].is_student);
         this.users = data;
+        for (const i of this.users) {
+          if (!i.is_student) {
+            this.professors.push(i);
+          }
+        }
       },
       error => {
         // alert(error.error.message);
         console.log(error);
-        
       }
     );
   }
@@ -66,21 +68,31 @@ export class ProfessorHomeComponent implements OnInit {
       );
   }
   onclick(i) {
-    //     for(var index=0;i.answers.length;index++){
-    //       // this.answers=i.answers['index'].name+"\n";
-    //       // this.answers=i.answers['index'].text_answer+"\n";
-
-    //     }
-    this.answers = "";
+    this.selected=true;
+    this.commandid = i._id;
+    this.answers = [];
     for (const index of i.answers) {
-      this.answers += "[(name : " +index.name + ")" + "\n" +"(date : " +index.date + ")]" + "\n"+ "text_answer :" +index.text_answer + "\n";
-      
-      // console.log(index);
+      // this.answers += "[(name : " +index.name + ")" + "\n" +"(date : " +index.date + ")]" + "\n"+ "text_answer :" +index.text_answer + "\n";
+      this.answers.push(
+        `[(name : ${index.name})(date : ${index.date})] text_answer : ${index.text_answer}.`
+      );
     }
-    console.log(this.answers);
-    // this.answers=i.answers['0'].name;
-    // console.log(i.answers);
-    this.textcommand = "[(title : " +i.title + ")" + "\n" +"(date : " +i.date + ")]" + "\n"+ "text_command"+ i.text_command;
-    // console.log(this.textcommand);
+    this.textcommand =
+      "[(title : " +
+      i.title +
+      ")" +
+      "\n" +
+      "(date : " +
+      i.date +
+      ")]" +
+      "\n" +
+      "text_command : " +
+      i.text_command;
+  }
+
+  getboarder(i){
+    if(this.commandid==i._id){
+      return "1px solid red";
+    }
   }
 }

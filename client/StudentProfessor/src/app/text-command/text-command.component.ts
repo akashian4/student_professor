@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TextCommandComponent implements OnInit {
 @Input() text_command:string;
-@Input() answers:string;
+@Input() answers:any;
 
   constructor() { }
 
